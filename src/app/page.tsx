@@ -1,3 +1,4 @@
+import { ArtifactSearchDialog } from "@/components/artifact-search";
 import { Navbar, RedirectingNavItem } from "@/components/navbar";
 import { Input } from "@/components/ui/input";
 import { BookOpenText, Coffee } from "lucide-react";
@@ -46,6 +47,7 @@ export default function Home() {
           </button>
         </div>
       </div>
+      <ArtifactSearchDialog />
     </main>
   );
 }
