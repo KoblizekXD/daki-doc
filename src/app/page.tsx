@@ -5,7 +5,7 @@ import { BookOpenText, Coffee } from "lucide-react";
 
 export default function Home() {
   return (
-    <main className={'flex flex-col min-h-screen'}>
+    <main className={'flex flex-col min-h-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]'}>
       <Navbar>
         <RedirectingNavItem className={'font-extrabold flex items-center gap-x-2'} href="/">
           <BookOpenText />

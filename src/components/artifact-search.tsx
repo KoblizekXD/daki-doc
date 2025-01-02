@@ -23,7 +23,8 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
-import { ArtifactPreviewResults, findPreview } from "@/lib/central-util";
+import { ArtifactPreviewResults, findJavadoc, findPreview } from "@/lib/central-util";
+import Link from "next/link";
 
 export function ArtifactSearchDialog() {
   const [open, setOpen] = React.useState(false);
@@ -113,12 +114,14 @@ export function ArtifactSearchDialog() {
             ) : (
               results?.results.map((result, index) => (
                 <CommandItem className={'cursor-pointer'} key={index}>
-                  <Package />
-                  <span>{result.id}</span>
-                  <span className="ml-auto text-muted-foreground">
-                    {result.latestVersion}
-                    <span> at </span> {result.repoId}
-                  </span>
+                  <Link href={`/javadocs/${result.id}:${result.latestVersion}`} target='_blank' className="flex gap-2 p-0.5 items-center w-full">
+                    <Package />
+                    <span>{result.id}</span>
+                    <span className="ml-auto text-muted-foreground">
+                      {result.latestVersion}
+                      <span> at </span> {result.repoId}
+                    </span>
+                  </Link>
                 </CommandItem>
               ))
             )}

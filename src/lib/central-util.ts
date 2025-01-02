@@ -25,3 +25,11 @@ export const findPreview = async (query: string): Promise<ArtifactPreviewResults
     }))
   }
 }
+
+export const findJavadoc = (group: string, artifact: string, version: string) => {
+  return `https://search.maven.org/remotecontent?filepath=${group.replaceAll('.', '/')}/${artifact}/${version}/${artifact}-${version}-javadoc.jar`;
+}
+
+export const findSources = (group: string, artifact: string, version: string) => {
+  return `https://search.maven.org/remotecontent?filepath=${group.replaceAll('.', '/')}/${artifact}/${version}/${artifact}-${version}-sources.jar`;
+}
