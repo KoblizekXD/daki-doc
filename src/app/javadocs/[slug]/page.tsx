@@ -1,4 +1,3 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
 import ArtifactContent from "./javadoc";
 
 export default async function BrowseDocs({
@@ -8,5 +7,5 @@ export default async function BrowseDocs({
 }) {
   const slug = (await params).slug;
 
-  return <ArtifactContent artifact={slug} />;
+  return <ArtifactContent artifact={decodeURIComponent(slug)} />;
 }

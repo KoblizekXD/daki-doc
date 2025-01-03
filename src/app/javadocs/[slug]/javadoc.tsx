@@ -1,8 +1,9 @@
 "use client";
 
 import { Navbar, RedirectingNavItem } from "@/components/navbar";
-import { Sidebar, SidebarItem } from "@/components/sidebar";
-import { BookOpenText, ChevronDown, Package, Search, SearchIcon } from "lucide-react";
+import { ArtifactHeading, Sidebar, SidebarItem } from "@/components/sidebar";
+import { BookOpenText, ExternalLink} from "lucide-react";
+import Link from "next/link";
 
 export default function ArtifactContent({ artifact }: { artifact: string }) {
   return (
@@ -27,10 +28,22 @@ export default function ArtifactContent({ artifact }: { artifact: string }) {
             </kbd>
           </button>
         </div>
+        <Link target='_blank' href={`https://mvnrepository.com/artifact/${artifact.replaceAll(':', '/')}`} className="ml-auto text-sm flex select-none cursor-pointer hover:bg-muted transition-colors items-center gap-x-2 rounded p-1">
+          <span className="text-muted-foreground">{artifact}</span>
+          <ExternalLink size={16} />
+        </Link>
       </Navbar>
       <div className="flex-1 flex">
         <Sidebar>
-          <SidebarItem title="Yes">
+          <ArtifactHeading name="Guava" version={["1.0.0-jre", "1.1.1-jdk"]} />
+          <SidebarItem title="String">
+            <SidebarItem title="Yes">
+            <SidebarItem title="Yes">
+            
+            </SidebarItem>
+            </SidebarItem>
+          </SidebarItem>
+          <SidebarItem title="String">
             <SidebarItem title="Yes">
             <SidebarItem title="Yes">
             
