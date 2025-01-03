@@ -13,11 +13,6 @@ const inter = Inter({
   weight: 'variable'
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
   title: "Daki Docs",
   description: "Browse Javadocs with modern UI!",
@@ -30,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} ${geistMono.variable} antialiased`}>
+      <body className={`${inter.className} antialiased`}>
         <ThemeProvider
             attribute="class"
             defaultTheme='dark'

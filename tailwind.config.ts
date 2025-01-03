@@ -66,9 +66,9 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
-  		backgroundImage: {
-  			'radial-bottom-middle': 'radial-gradient(circle 20rem at bottom center, var(--tw-gradient-stops))'
-  		}
+			fontFamily: {
+        mono: ['JetBrains Mono Variable', 'monoscape'],
+      }
   	}
   },
   plugins: [require("tailwindcss-animate")],
