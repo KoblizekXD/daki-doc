@@ -19,7 +19,7 @@ export default function Page({
         This is only a placeholder page, please select your desired version on the top left!
       </p>
       <Select onValueChange={(value) => {
-        router.push(`${pathName}/${value}`)
+        router.push(`${pathName}/${value}`);
       }}>
         <SelectTrigger className="w-96">
           <SelectValue placeholder='Versions...' />

@@ -121,7 +121,11 @@ export const SidebarItem = ({
   );
 };
 
-export function DefaultSidebar({ artifact, versions }: { artifact: string, versions: { latest: string, versions: string[] } }) {
+export function DefaultSidebar({ artifact, versions, selected }: { 
+  artifact: string, 
+  versions: { latest: string, versions: string[] }, 
+  selected: string 
+}) {
   const router = useRouter();
 
   return (
@@ -133,6 +137,7 @@ export function DefaultSidebar({ artifact, versions }: { artifact: string, versi
         }}
         name={artifact.split(':')[1]}
         version={versions.versions}
+        selected={versions.versions.indexOf(selected)}
       />
     </Sidebar>
   )

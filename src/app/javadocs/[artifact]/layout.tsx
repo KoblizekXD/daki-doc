@@ -1,11 +1,9 @@
 import { Navbar, RedirectingNavItem } from "@/components/navbar";
-import { ArtifactHeading, DefaultSidebar, Sidebar } from "@/components/sidebar";
 import {  getAllVersionsFromArtifact } from "@/lib/central-util";
 import { BookOpenText, Coffee, ExternalLink, SpellCheck2 } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-export default async function DocsBrowserLayout({
+export default async function DocsIndexLayout({
   children,
   params,
 }: {
