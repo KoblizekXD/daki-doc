@@ -1,3 +1,5 @@
+import { toSimpleName } from "./central-util";
+
 export interface Javadoc {
   description: {
     elements: (InlineTag | string)[];
@@ -27,4 +29,29 @@ export interface BlockTag {
   };
   name?: string;
   tagName: string;
+}
+
+export interface ClassJavadocData {
+  id: string;
+  javadocData: JavadocData[];
+}
+
+export interface ClassSummary {
+  fqName: string;
+  simpleName: string;
+  classJavaDoc?: JavadocData;
+  methods: JavadocData[];
+  fields: JavadocData[];
+  constructors: JavadocData[];
+}
+
+export function convert(cjd: ClassJavadocData): ClassSummary {
+  return {
+    fqName: cjd.id,
+    simpleName: toSimpleName(cjd.id),
+    classJavaDoc: cjd.javadocData.find(jd => jd.attachedType === 'CLASS' && jd.attachedName === cjd.id),
+    constructors: cjd.javadocData.filter(jd => jd.attachedType === 'CONSTRUCTOR'),
+    fields: cjd.javadocData.filter(jd => jd.attachedType === 'FIELD'),
+    methods: cjd.javadocData.filter(jd => jd.attachedType === 'METHOD'),
+  }
 }
