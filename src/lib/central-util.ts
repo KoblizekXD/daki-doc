@@ -66,11 +66,11 @@ export const findAllClasses = async (body: {
 export const getAllVersions = async (repo: string = MAVEN_CENTRAL, group: string, artifact: string): Promise<{
   latest: string;
   versions: string[];
-} | string> => {
+} | undefined> => {
   const response = await fetch(new URL(`${group.replaceAll('.', '/')}/${artifact}/maven-metadata.xml`, repo));
 
   if (!response.ok) {
-    return response.statusText;
+    return undefined;
   }
 
   const text = await response.text();
@@ -81,4 +81,11 @@ export const getAllVersions = async (repo: string = MAVEN_CENTRAL, group: string
     latest: xml.metadata.versioning.latest,
     versions: Array.from(xml.metadata.versioning.versions.version).map((v) => v as string)
   }
+}
+
+export const getAllVersionsFromArtifact = async (artifact: string): Promise<{
+  latest: string;
+  versions: string[];
+} | undefined> => {
+  return getAllVersions(MAVEN_CENTRAL, artifact.split(':')[0], artifact.split(':')[1]);
 }
