@@ -2,10 +2,28 @@
 
 import { Navbar, RedirectingNavItem } from "@/components/navbar";
 import { ArtifactHeading, Sidebar, SidebarItem } from "@/components/sidebar";
+import { INTERFACE_ICON } from "@/lib/utils";
 import { BookOpenText, ExternalLink} from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-export default function ArtifactContent({ artifact }: { artifact: string }) {
+interface ArtifactContentProps {
+  artifact: string;
+  found: boolean;
+  types: string[] | string;
+  versions: string[];
+}
+
+export default function ArtifactContent({ artifact, found, types, versions }: ArtifactContentProps) {
+  const router = useRouter();
+
+  if (!found) {
+    return (
+      <h1>Cannot find target element: {types}</h1>
+    )
+  }
+
   return (
     <main className="flex flex-col min-h-screen">
       <Navbar className="py-2">
@@ -35,22 +53,23 @@ export default function ArtifactContent({ artifact }: { artifact: string }) {
       </Navbar>
       <div className="flex-1 flex">
         <Sidebar>
-          <ArtifactHeading name="Guava" version={["1.0.0-jre", "1.1.1-jdk"]} />
-          <SidebarItem title="String">
-            <SidebarItem title="Yes">
-            <SidebarItem title="Yes">
-            
-            </SidebarItem>
-            </SidebarItem>
-          </SidebarItem>
-          <SidebarItem title="String">
-            <SidebarItem title="Yes">
-            <SidebarItem title="Yes">
-            
-            </SidebarItem>
-            </SidebarItem>
-          </SidebarItem>
+          <ArtifactHeading onVersionChange={(version) => {
+            const split = artifact.split(':');
+            router.push(`/javadocs/${split[0]}:${split[1]}:${version}`);
+          }} name="Guava" version={versions} selected={0} />
+          {(types as string[]).map((type, i) => (
+            <SidebarItem key={i} title={type} />
+          ))}
         </Sidebar>
+        <div className="flex-1 px-32 py-28 flex flex-col gap-y-2 font-mono border" >
+          <h1 className="text-4xl flex gap-x-2 items-center">
+            <Image src={INTERFACE_ICON} alt="eh" width={32} height={32} />
+            Hello
+          </h1>
+          <pre className='overflow-scroll max-w-[50%] border rounded bg-muted p-2'>
+            public interface Hello;
+          </pre>
+        </div>
       </div>
     </main>
   );

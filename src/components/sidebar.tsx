@@ -6,7 +6,7 @@ import { ReactNode, useState } from "react";
 
 export const Sidebar = ({ children }: { children?: ReactNode }) => {
   return (
-    <aside className="min-w-64 border-r flex flex-col">
+    <aside className="max-w-[30%] min-w-64 overflow-x-hidden text-ellipsis border-r flex flex-col">
       {children}
     </aside>
   );
@@ -87,7 +87,7 @@ export const SidebarItem = ({
   const [opened, setOpened] = useState(false);
 
   return (
-    <div className="flex flex-col mx-2 my-1">
+    <div className="flex overflow-hidden flex-col mx-2 my-1">
       <div
         onClick={() => {
           setOpened(!opened);
