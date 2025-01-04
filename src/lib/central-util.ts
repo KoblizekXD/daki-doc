@@ -39,6 +39,30 @@ export const findSources = (group: string, artifact: string, version: string) =>
 export const JAVADOC_API_URL = 'https://javadocs-backend.7f454c46.xyz'
 export const MAVEN_CENTRAL   = 'https://repo1.maven.org/maven2/'
 
+export const findClassJavadoc = async (body: {
+  repository: string;
+  groupId: string;
+  artifactId: string;
+  version: string;
+  classData: string;
+}): Promise<string[] | undefined> => {
+  const result = await fetch(`${JAVADOC_API_URL}/api/javadoc`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!result.ok) {
+    return undefined;
+  }
+
+  const response = await result.json();
+  
+  return response;
+}
+
 export const findAllClasses = async (body: {
   repository: string;
   groupId: string;
@@ -88,4 +112,8 @@ export const getAllVersionsFromArtifact = async (artifact: string): Promise<{
   versions: string[];
 } | undefined> => {
   return getAllVersions(MAVEN_CENTRAL, artifact.split(':')[0], artifact.split(':')[1]);
+}
+
+export function toSimpleName(name: string) {
+  return name.substring(name.lastIndexOf('.') + 1);
 }

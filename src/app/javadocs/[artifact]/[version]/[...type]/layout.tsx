@@ -22,8 +22,8 @@ export default async function ClassLayout({
   }
 
   return (
-    <main className="flex w-full">
-      <DefaultSidebar classes={await findAllClasses({
+    <main className="flex h-full w-full">
+      <DefaultSidebar selectedClass={targetClass} classes={await findAllClasses({
           repository: MAVEN_CENTRAL,
           groupId: artifact.split(':')[0],
           artifactId: artifact.split(':')[1],

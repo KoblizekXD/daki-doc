@@ -8,7 +8,7 @@ import { ReactNode, useEffect, useState } from "react";
 
 export const Sidebar = ({ children }: { children?: ReactNode }) => {
   return (
-    <aside className="max-w-[25%] overflow-x-hidden text-ellipsis border-r flex flex-col">
+    <aside className="min-w-[25%] overflow-x-hidden text-ellipsis border-r flex flex-col">
       {children}
     </aside>
   );
@@ -88,20 +88,24 @@ export const SidebarItem = ({
   className,
   title,
   onSelected,
-  icon
+  icon,
+  defaultState = false
 }: {
   children?: React.ReactNode;
   className?: string;
   title: string;
   onSelected?: () => void;
   icon: string;
+  defaultState?: boolean;
 }) => {
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(defaultState);
 
   return (
     <div className="flex overflow-hidden flex-col mx-2 my-1">
       <div
         onClick={() => {
+          if (!opened && !children)
+            onSelected?.();
           setOpened(!opened);
         }}
         className={`${className} px-4 flex cursor-pointer items-center select-none gap-x-2 py-2 text-sm text-muted-foreground hover:bg-muted transition-colors rounded`}
@@ -130,11 +134,12 @@ export const SidebarItem = ({
   );
 };
 
-export function DefaultSidebar({ artifact, versions, selected, classes }: { 
+export function DefaultSidebar({ artifact, versions, selected, classes, selectedClass }: { 
   artifact: string, 
   versions: { latest: string, versions: string[] }, 
   selected: string;
   classes: string[];
+  selectedClass: string;
 }) {
   const router = useRouter();
   const tree = toTree(classes);
@@ -151,9 +156,10 @@ export function DefaultSidebar({ artifact, versions, selected, classes }: {
         selected={versions.versions.indexOf(selected)}
       />
       {Object.entries(tree).map((group, i) => (
-        <SidebarItem key={i} title={group[0]} icon={PACKAGE_ICON}>
+        <SidebarItem defaultState={group[1].some((item: any) => selectedClass === item.type)} key={i} title={group[0]} icon={PACKAGE_ICON}>
           {group[1].map((item: any, j: number) => (
             <SidebarItem
+              className={`${selectedClass === item.type && 'bg-muted'}`}
               icon={CLASS_ICON}
               key={j}
               title={item.type.substring(item.type.lastIndexOf('.') + 1)}
