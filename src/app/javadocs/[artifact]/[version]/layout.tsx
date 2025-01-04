@@ -23,8 +23,11 @@ export default async function VersionOpinionedDocsLayout({
   
 
   return (
-    <main className="flex min-h-screen">
+    <main className="flex w-full min-h-screen">
       <DefaultSidebar selected={param.version} artifact={artifact} versions={versions} />
+      <div className="flex-1">
+        {children}
+      </div>
     </main>
   )
 }

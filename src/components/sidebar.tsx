@@ -1,9 +1,9 @@
 "use client";
 
-import { ChevronDown, ChevronRight, LibraryBig, Package } from "lucide-react";
+import { ChevronDown, ChevronRight, Library, LibraryBig, Package } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 export const Sidebar = ({ children }: { children?: ReactNode }) => {
   return (
@@ -26,6 +26,14 @@ export const ArtifactHeading = ({
 }) => {
   const [opened, setOpened] = useState(false);
   const [selectedItem, setSelectedItem] = useState<number | undefined>(selected);
+
+  useEffect(() => {
+    const outsideClickListener = (e: MouseEvent) => {
+      setOpened(false);
+    }
+    document.addEventListener('click', outsideClickListener);
+    return () => document.removeEventListener('click', outsideClickListener);
+  })
 
   return (
     <div className="py-2 relative cursor-pointer m-2 rounded-md flex items-center px-4 hover:bg-muted transition-colors">
@@ -60,7 +68,7 @@ export const ArtifactHeading = ({
                   }}
                   key={i}
                   className="flex hover:bg-muted rounded items-center px-2 py-1 gap-x-2">
-                  <LibraryBig stroke="#753A9A" />
+                  <Library stroke="#3B82F6" />
                   <span>{name}</span>
                   <span className="ml-auto text-xs text-muted-foreground">
                     {v}

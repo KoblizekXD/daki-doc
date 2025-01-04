@@ -44,7 +44,7 @@ export const findAllClasses = async (body: {
   groupId: string;
   artifactId: string;
   version: string;
-}): Promise<string[] | string> => {
+}): Promise<string[] | undefined> => {
   
   const result = await fetch(`${JAVADOC_API_URL}/api/javadoc/classes`, {
     method: 'POST',
@@ -55,7 +55,7 @@ export const findAllClasses = async (body: {
   });
 
   if (!result.ok) {
-    return result.statusText;
+    return undefined;
   }
 
   const response = await result.json();
