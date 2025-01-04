@@ -2,6 +2,7 @@
 
 import { ChevronDown, ChevronRight, LibraryBig, Package } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
 
 export const Sidebar = ({ children }: { children?: ReactNode }) => {
@@ -15,7 +16,7 @@ export const Sidebar = ({ children }: { children?: ReactNode }) => {
 export const ArtifactHeading = ({
   name,
   version,
-  selected = 0,
+  selected = undefined,
   onVersionChange
 }: {
   name: string;
@@ -24,7 +25,7 @@ export const ArtifactHeading = ({
   onVersionChange?: (version: string) => void;
 }) => {
   const [opened, setOpened] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(selected);
+  const [selectedItem, setSelectedItem] = useState<number | undefined>(selected);
 
   return (
     <div className="py-2 relative cursor-pointer m-2 rounded-md flex items-center px-4 hover:bg-muted transition-colors">
@@ -37,9 +38,9 @@ export const ArtifactHeading = ({
           <Package stroke="#3b82f6" className="p-0.5" />
         </span>
         <div className="flex flex-col ml-2">
-          <h1 className="text-normal font-semibold">Guava</h1>
+          <h1 className="text-normal font-semibold">{name}</h1>
           <p className="text-xs text-muted-foreground">
-            {typeof version === "string" ? version : version[selectedItem]}
+            {typeof version === "string" ? version : selectedItem !== undefined ? version[selectedItem] : ''}
           </p>
         </div>
       </div>
@@ -48,7 +49,7 @@ export const ArtifactHeading = ({
           <div className="ml-auto text-muted-foreground">
             {opened ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
           </div>
-          <div className={`absolute ${!opened && 'hidden'} flex flex-col rounded border bg-background p-0.5 w-inherit left-0 top-[110%] right-0`}>
+          <div className={`absolute max-h-[500%] overflow-y-scroll ${!opened && 'hidden'} flex flex-col rounded border bg-background p-0.5 w-inherit left-0 top-[110%] right-0`}>
             {version instanceof Array &&
               version.map((v, i) => (
                 <div
@@ -60,7 +61,7 @@ export const ArtifactHeading = ({
                   key={i}
                   className="flex hover:bg-muted rounded items-center px-2 py-1 gap-x-2">
                   <LibraryBig stroke="#753A9A" />
-                  <span>Guava</span>
+                  <span>{name}</span>
                   <span className="ml-auto text-xs text-muted-foreground">
                     {v}
                   </span>
@@ -119,3 +120,20 @@ export const SidebarItem = ({
     </div>
   );
 };
+
+export function DefaultSidebar({ artifact, versions }: { artifact: string, versions: { latest: string, versions: string[] } }) {
+  const router = useRouter();
+
+  return (
+    <Sidebar>
+      <ArtifactHeading
+        onVersionChange={(version) => {
+          const split = artifact.split(':');
+          router.push(`/javadocs/${split[0]}:${split[1]}/${version}`);          
+        }}
+        name={artifact.split(':')[1]}
+        version={versions.versions}
+      />
+    </Sidebar>
+  )
+}

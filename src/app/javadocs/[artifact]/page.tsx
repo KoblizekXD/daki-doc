@@ -1,26 +1,14 @@
-import { findAllClasses, getAllVersions, MAVEN_CENTRAL } from "@/lib/central-util";
-import ArtifactContent from "./javadoc";
+import { getAllVersionsFromArtifact } from "@/lib/central-util";
+import { use, useEffect, useState } from "react";
+import Page from ".";
 
-export default async function BrowseDocs({
+export default async function IndexPage({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ artifact: string }>
 }) {
-  const slug = (await params).slug;
-  const decoded = decodeURIComponent(slug);
+  const artifact = decodeURIComponent((await params).artifact);
+  const versions = await getAllVersionsFromArtifact(artifact);
 
-  const result = await findAllClasses({
-    repository: MAVEN_CENTRAL,
-    groupId: decoded.split(':')[0],
-    artifactId: decoded.split(':')[1],
-    version: decoded.split(':')[2]
-  })
-
-  const versions = await getAllVersions(MAVEN_CENTRAL, decoded.split(':')[0], decoded.split(':')[1]);
-
-  if (typeof versions === 'string') {
-    return <h1>Cannot find versions: {versions}</h1>
-  }
-
-  return <ArtifactContent versions={(versions as { latest: string; versions: string[] }).versions} found={typeof result !== 'string'} types={result} artifact={decoded} />;
+  return <Page versions={versions} />
 }

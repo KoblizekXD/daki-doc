@@ -79,7 +79,7 @@ export const getAllVersions = async (repo: string = MAVEN_CENTRAL, group: string
   
   return {
     latest: xml.metadata.versioning.latest,
-    versions: Array.from(xml.metadata.versioning.versions.version).map((v) => v as string)
+    versions: Array.from(xml.metadata.versioning.versions.version).map((v) => v as string).reverse()
   }
 }
 

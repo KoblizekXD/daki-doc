@@ -1,16 +1,16 @@
 import { Navbar, RedirectingNavItem } from "@/components/navbar";
-import { Sidebar } from "@/components/sidebar";
-import { Button } from "@/components/ui/button";
-import { getAllVersions, getAllVersionsFromArtifact } from "@/lib/central-util";
+import { ArtifactHeading, DefaultSidebar, Sidebar } from "@/components/sidebar";
+import {  getAllVersionsFromArtifact } from "@/lib/central-util";
 import { BookOpenText, Coffee, ExternalLink, SpellCheck2 } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function DocsBrowserLayout({
   children,
   params,
 }: {
   children: React.ReactNode
-  params: Promise<{ artifact: string }>
+  params: Promise<{ artifact: string, test: string }>
 }) {
   const artifact = decodeURIComponent((await params).artifact);
   const versions = await getAllVersionsFromArtifact(artifact);
@@ -63,9 +63,7 @@ export default async function DocsBrowserLayout({
         </Link>
       </Navbar>
       <div className="flex-1 flex">
-        <Sidebar>
-
-        </Sidebar>
+        {children}
       </div>
     </main>
   )
