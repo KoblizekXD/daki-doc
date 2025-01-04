@@ -1,5 +1,6 @@
 "use client";
 
+import { CLASS_ICON, PACKAGE_ICON } from "@/lib/utils";
 import { ChevronDown, ChevronRight, Library, LibraryBig, Package } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -7,7 +8,7 @@ import { ReactNode, useEffect, useState } from "react";
 
 export const Sidebar = ({ children }: { children?: ReactNode }) => {
   return (
-    <aside className="max-w-[30%] min-w-64 overflow-x-hidden text-ellipsis border-r flex flex-col">
+    <aside className="max-w-[25%] overflow-x-hidden text-ellipsis border-r flex flex-col">
       {children}
     </aside>
   );
@@ -86,12 +87,14 @@ export const SidebarItem = ({
   children,
   className,
   title,
-  onSelected
+  onSelected,
+  icon
 }: {
   children?: React.ReactNode;
   className?: string;
   title: string;
   onSelected?: () => void;
+  icon: string;
 }) => {
   const [opened, setOpened] = useState(false);
 
@@ -107,9 +110,7 @@ export const SidebarItem = ({
           width={20}
           height={20}
           alt="xd"
-          src={
-            "https://intellij-icons.jetbrains.design/icons/AllIcons/expui/nodes/class_dark.svg"
-          }
+          src={icon}
         />
         {title}
         {children &&
@@ -129,12 +130,14 @@ export const SidebarItem = ({
   );
 };
 
-export function DefaultSidebar({ artifact, versions, selected }: { 
+export function DefaultSidebar({ artifact, versions, selected, classes }: { 
   artifact: string, 
   versions: { latest: string, versions: string[] }, 
-  selected: string 
+  selected: string;
+  classes: string[];
 }) {
   const router = useRouter();
+  const tree = toTree(classes);
 
   return (
     <Sidebar>
@@ -147,6 +150,34 @@ export function DefaultSidebar({ artifact, versions, selected }: {
         version={versions.versions}
         selected={versions.versions.indexOf(selected)}
       />
+      {Object.entries(tree).map((group, i) => (
+        <SidebarItem key={i} title={group[0]} icon={PACKAGE_ICON}>
+          {group[1].map((item: any, j: number) => (
+            <SidebarItem
+              icon={CLASS_ICON}
+              key={j}
+              title={item.type.substring(item.type.lastIndexOf('.') + 1)}
+              onSelected={() => {
+                const split = artifact.split(':');
+                router.push(`/javadocs/${split[0]}:${split[1]}/${selected}/${item.type}`);
+              }}
+            />
+          ))}
+        </SidebarItem>
+      ))}
     </Sidebar>
   )
 }
+
+function toTree(classes: string[]): Record<string, string[]> {
+  const mapped = classes.map(type => ({ type, package: type.substring(0, type.lastIndexOf('.')) }))
+  const toRet = groupBy(mapped, 'package') as Record<string, string[]>;
+  return toRet;
+}
+
+const groupBy = function(xs: any[], key: string) {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};

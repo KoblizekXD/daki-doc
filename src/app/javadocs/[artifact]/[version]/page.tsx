@@ -22,7 +22,7 @@ export default async function VersionIndexPage({ params }: {
   }
 
   return (
-    <main className="flex min-h-screen p-24 gap-y-2 flex-col items-center">
+    <main className="flex justify-center gap-y-2 flex-col items-center">
       <h1 className="text-3xl font-bold">All classes</h1>
       <div className="flex gap-y-4 flex-col">
         <ClassSearchableList values={classes || []} placeholder='Filter...' />

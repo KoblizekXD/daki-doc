@@ -1,6 +1,5 @@
 import { DefaultSidebar } from "@/components/sidebar";
 import { getAllVersionsFromArtifact } from "@/lib/central-util";
-import { version } from "os";
 
 export default async function VersionOpinionedDocsLayout({
   children,
@@ -20,14 +19,10 @@ export default async function VersionOpinionedDocsLayout({
       </main>
     )
   }
-  
 
   return (
-    <main className="flex w-full min-h-screen">
-      <DefaultSidebar selected={param.version} artifact={artifact} versions={versions} />
-      <div className="flex-1">
-        {children}
-      </div>
+    <main className="flex justify-center items-center w-full">
+      {children}
     </main>
   )
 }
