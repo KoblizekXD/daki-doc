@@ -12,6 +12,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Daki Docs',
   description: 'Browse Javadocs with modern UI!',
+  icons: [
+    '/icon1.ico'
+  ]
 };
 
 export default function RootLayout({

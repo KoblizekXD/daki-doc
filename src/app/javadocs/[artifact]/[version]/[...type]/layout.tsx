@@ -1,10 +1,16 @@
 import { DefaultSidebar } from '@/components/sidebar';
 import {
   findAllClasses,
-  findJavadoc,
   getAllVersionsFromArtifact,
   MAVEN_CENTRAL,
 } from '@/lib/central-util';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  icons: [
+    '/icon2.ico'
+  ]
+}
 
 export default async function ClassLayout({
   children,
