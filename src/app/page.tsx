@@ -13,7 +13,7 @@ export default function Home() {
           className={'font-extrabold flex items-center gap-x-2'}
           href='/'>
           <BookOpenText />
-          DakiDocs
+          Daki Docs
         </RedirectingNavItem>
         <RedirectingNavItem className={'text-foreground/80'} href='/about'>
           About
