@@ -1,4 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
+import { ClassJavadocData } from "./javadoc";
 
 export type ArtifactPreviewResults = {
   total: number;
@@ -45,7 +46,7 @@ export const findClassJavadoc = async (body: {
   artifactId: string;
   version: string;
   classData: string;
-}): Promise<string[] | undefined> => {
+}): Promise<ClassJavadocData | undefined> => {
   const result = await fetch(`${JAVADOC_API_URL}/api/javadoc`, {
     method: 'POST',
     headers: {
@@ -57,10 +58,8 @@ export const findClassJavadoc = async (body: {
   if (!result.ok) {
     return undefined;
   }
-
-  const response = await result.json();
   
-  return response;
+  return await result.json();
 }
 
 export const findAllClasses = async (body: {

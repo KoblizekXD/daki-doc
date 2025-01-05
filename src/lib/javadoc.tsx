@@ -1,4 +1,7 @@
+import React, { ReactElement } from "react";
 import { toSimpleName } from "./central-util";
+import Link from "next/link";
+import parse, { DOMNode, domToReact, HTMLReactParserOptions } from 'html-react-parser';
 
 export interface Javadoc {
   description: {
@@ -54,4 +57,34 @@ export function convert(cjd: ClassJavadocData): ClassSummary {
     fields: cjd.javadocData.filter(jd => jd.attachedType === 'FIELD'),
     methods: cjd.javadocData.filter(jd => jd.attachedType === 'METHOD'),
   }
+}
+
+export function inlineTagToString(tag: InlineTag): string {
+  switch (tag.type) {
+    case 'CODE':
+      return `<code>${tag.content}</code>`;
+    default:
+      return tag.content;
+  }
+}
+
+export function javadocToNode(javadoc?: Javadoc): React.ReactNode {  
+  return (
+    <div className="text-muted-foreground">
+      {(javadoc && !javadoc.description.empty) && (
+        parse(javadoc.description.elements.map(element => ( typeof element === 'string' ? element : inlineTagToString(element)))
+          .join(''))
+      )}
+      <h3>Tags:</h3>
+      {javadoc?.blockTags.map((tag) => (
+        <div className="flex gap-x-4" key={tag.tagName}>
+          {tag.tagName ? <h4>{tag.tagName}:</h4> : 'EE'}
+          <span>
+            {!tag.content.empty && parse(tag.content.elements.map(element => ( typeof element === 'string' ? element : inlineTagToString(element)))
+              .join(''))}
+          </span>
+        </div>
+      ))}
+    </div>
+  )
 }
