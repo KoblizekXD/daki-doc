@@ -1,12 +1,12 @@
-import { DefaultSidebar } from "@/components/sidebar";
-import { getAllVersionsFromArtifact } from "@/lib/central-util";
+import { DefaultSidebar } from '@/components/sidebar';
+import { getAllVersionsFromArtifact } from '@/lib/central-util';
 
 export default async function VersionOpinionedDocsLayout({
   children,
   params,
 }: {
-  children: React.ReactNode
-  params: Promise<{ artifact: string, version: string }>
+  children: React.ReactNode;
+  params: Promise<{ artifact: string; version: string }>;
 }) {
   const param = await params;
   const artifact = decodeURIComponent(param.artifact);
@@ -17,12 +17,10 @@ export default async function VersionOpinionedDocsLayout({
       <main>
         <h1>You were not supposed to be here!</h1>
       </main>
-    )
+    );
   }
 
   return (
-    <main className="flex justify-center items-center w-full">
-      {children}
-    </main>
-  )
+    <main className='flex justify-center items-center w-full'>{children}</main>
+  );
 }

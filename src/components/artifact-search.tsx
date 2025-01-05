@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 import {
   Archive,
   Calculator,
@@ -11,7 +11,7 @@ import {
   Settings,
   Smile,
   User,
-} from "lucide-react";
+} from 'lucide-react';
 
 import {
   CommandDialog,
@@ -22,14 +22,18 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@/components/ui/command";
-import { ArtifactPreviewResults, findJavadoc, findPreview } from "@/lib/central-util";
-import Link from "next/link";
+} from '@/components/ui/command';
+import {
+  ArtifactPreviewResults,
+  findJavadoc,
+  findPreview,
+} from '@/lib/central-util';
+import Link from 'next/link';
 
 export function ArtifactSearchDialog() {
   const [open, setOpen] = React.useState(false);
-  const [query, setQuery] = React.useState("");
-  const [debouncedValue, setDebouncedValue] = React.useState("");
+  const [query, setQuery] = React.useState('');
+  const [debouncedValue, setDebouncedValue] = React.useState('');
   const [results, setResults] = React.useState<
     ArtifactPreviewResults | undefined
   >(undefined);
@@ -37,14 +41,14 @@ export function ArtifactSearchDialog() {
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((open) => !open);
       }
     };
 
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
+    document.addEventListener('keydown', down);
+    return () => document.removeEventListener('keydown', down);
   }, []);
 
   React.useEffect(() => {
@@ -61,17 +65,17 @@ export function ArtifactSearchDialog() {
     async function search() {
       setLoading(true);
       setResults(
-        await (await fetch(`/api/maven?query=${debouncedValue}`)).json()
+        await (await fetch(`/api/maven?query=${debouncedValue}`)).json(),
       );
       setLoading(false);
     }
-    if (debouncedValue !== "") search();
+    if (debouncedValue !== '') search();
     else setResults(undefined);
   }, [debouncedValue]);
 
   React.useEffect(() => {
     if (!open) {
-      setQuery("");
+      setQuery('');
       setResults(undefined);
       setLoading(false);
     }
@@ -84,14 +88,14 @@ export function ArtifactSearchDialog() {
           onValueChange={(value) => {
             setQuery(value);
           }}
-          placeholder="Find global artifacts..."
+          placeholder='Find global artifacts...'
         />
         <CommandList>
           <CommandEmpty>Nothing found</CommandEmpty>
-          <CommandGroup heading="Suggestions">
+          <CommandGroup heading='Suggestions'>
             {loading ? (
-              <CommandItem className="text-center">
-                <Loader2Icon className="animate-spin" />
+              <CommandItem className='text-center'>
+                <Loader2Icon className='animate-spin' />
                 Loading...
               </CommandItem>
             ) : !results || results?.total === 0 ? (
@@ -99,14 +103,14 @@ export function ArtifactSearchDialog() {
                 <CommandItem>
                   <Package />
                   <span>Guava</span>
-                  <span className="ml-auto text-muted-foreground">
+                  <span className='ml-auto text-muted-foreground'>
                     com.google.guava:guava:33.4.0-jre
                   </span>
                 </CommandItem>
                 <CommandItem>
                   <Package />
                   <span>SLF4J API Module</span>
-                  <span className="ml-auto text-muted-foreground">
+                  <span className='ml-auto text-muted-foreground'>
                     org.slf4j:slf4j-api:2.1.0-alpha1
                   </span>
                 </CommandItem>
@@ -114,10 +118,13 @@ export function ArtifactSearchDialog() {
             ) : (
               results?.results.map((result, index) => (
                 <CommandItem className={'cursor-pointer'} key={index}>
-                  <Link href={`/javadocs/${result.id}/${result.latestVersion}`} target='_blank' className="flex gap-2 p-0.5 items-center w-full">
+                  <Link
+                    href={`/javadocs/${result.id}/${result.latestVersion}`}
+                    target='_blank'
+                    className='flex gap-2 p-0.5 items-center w-full'>
                     <Package />
                     <span>{result.id}</span>
-                    <span className="ml-auto text-muted-foreground">
+                    <span className='ml-auto text-muted-foreground'>
                       {result.latestVersion}
                       <span> at </span> {result.repoId}
                     </span>
@@ -127,7 +134,7 @@ export function ArtifactSearchDialog() {
             )}
           </CommandGroup>
           <CommandSeparator />
-          <CommandGroup heading="Settings">
+          <CommandGroup heading='Settings'>
             <CommandItem>
               <Archive />
               <span>Edit Repositories</span>
